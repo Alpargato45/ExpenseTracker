@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "619371490068",
+    "project_id": "expensetracker-f9763",
+    "storage_bucket": "expensetracker-f9763.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619371490068:android:25dee7f4b031e97b743001",
+        "android_client_info": {
+          "package_name": "com.alpargato.expensetracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBGKyKC3p133cXVrEeLrg5WivfU5CkYhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
