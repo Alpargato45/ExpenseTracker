@@ -1,6 +1,7 @@
 package com.alpargato.expensetracker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -26,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container,homeFragment).commit();
+
+        //Paint the utility movile buttons to the color i want
+        getWindow().setNavigationBarColor(
+                ContextCompat.getColor(this, R.color.colorPrimary)
+        );
 
         //BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.notification);
         //badgeDrawable.setVisible(true);

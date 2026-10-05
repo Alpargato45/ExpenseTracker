@@ -1,16 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.HomeFragment">
+    android:fillViewport="true"
+    android:isScrollContainer="true">
 
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Home Fragment"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:textSize="32dp"/>
+        android:background="#281717 ">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/imagePhotoUser"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_background"
+            android:layout_marginLeft="20dp"/>
+
+        <TextView
+            android:id="@+id/WelcomeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Bienvenido de nuevo: "
+            android:textSize="18dp"
+            app:layout_constraintLeft_toRightOf="@+id/imagePhotoUser"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="30dp"
+            android:textColor="#DED2CA"/>
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/imagePhotoUser"
+            app:layout_constraintTop_toBottomOf="@+id/WelcomeText"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:text="textoPrueba"
+            android:textSize="18dp"
+            android:textColor="#DED2CA"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDoExpensePrediction"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/imagePhotoUser"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_background"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Plan de ahorro"
+                android:textSize="18dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="¿No tienes plan de ahorro todavía?"
+                android:textSize="18dp"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pulsa aquí para crear uno"
+                android:textSize="18dp"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutExpensePrediction"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/imagePhotoUser"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_background"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Plan de ahorro"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textColor="#DED2CA"
+                android:layout_marginLeft="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ahorro 0/0"
+                android:textSize="18dp"
+                android:textAlignment="center"
+                android:layout_marginTop="7dp"
+                android:layout_weight="1"
+                android:textColor="#DED2CA"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:text="Ahorro este mes: 0"
+                android:textSize="18dp"
+                android:textAlignment="center"
+                android:textColor="#DED2CA"/>
+
+
+            <TextView
+                android:id="@+id/txtViewMoreExpensePlan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver más de tu plan de ahorro"
+                android:textSize="12dp"
+                android:textColor="#18A7E8"
+                android:textAlignment="center"
+                android:layout_marginBottom="5dp"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/linearLayoutAddExpense"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutExpensePrediction"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_background"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:id="@+id/txtManageExpenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gestionar Gastos"
+                android:textSize="20dp"
+                android:textColor="#DED2CA"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"/>
+
+            <Button
+                android:id="@+id/btnAddExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Añadir Gasto"
+                android:backgroundTint="#6BB38E"
+                android:layout_below="@+id/txtManageExpenses"
+                android:layout_marginLeft="25dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#DED2CA"/>
+
+            <Button
+                android:id="@+id/btnDeleteExpense"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Borrar Gasto"
+                android:backgroundTint="#6BB38E"
+                android:layout_below="@+id/txtManageExpenses"
+                android:layout_toRightOf="@+id/btnAddExpense"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#DED2CA"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/linearLayoutSeeRecentsExpenses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutAddExpense"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_background"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <TextView
+                android:id="@+id/txtRecentsExpenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gastos Recientes"
+                android:textSize="20dp"
+                android:textColor="#DED2CA"
+                android:layout_marginLeft="10dp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtViewMoreRecentExpenses"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ver todos los gastos"
+                android:textSize="12dp"
+                android:textColor="#18A7E8"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_below="@+id/txtRecentsExpenses" />
+
+
+            <ListView
+                android:id="@+id/ListRecentExpenses"
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:layout_below="@id/txtViewMoreRecentExpenses"
+                android:nestedScrollingEnabled="true"
+                android:visibility="invisible"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminateTint="#DED2CA"
+                android:indeterminate="true"/>
+
+            <TextView
+                android:id="@+id/txtNoExistRecent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No existen gastos recientes"
+                android:layout_below="@id/txtViewMoreRecentExpenses"
+                android:visibility="invisible"/>
+
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

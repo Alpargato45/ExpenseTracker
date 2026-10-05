@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/expenseImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"/>
+
+    <TextView
+        android:id="@+id/txtNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number"
+        android:layout_toRightOf="@id/txtType"
+        android:layout_centerVertical="true"
+        android:textSize="16dp"
+        android:layout_marginLeft="60dp"/>
+
+    <TextView
+        android:id="@+id/txtMoneySymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Symbol"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/txtNumber"
+        android:layout_alignBaseline="@id/txtNumber"
+        android:layout_marginStart="4dp"
+        android:textSize="16dp"
+        android:layout_marginRight="10dp"/>
+
+    <TextView
+        android:id="@+id/txtType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comida"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/txtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/expenseImage"
+        android:text="Fecha"
+        android:layout_alignParentBottom="true"
+        android:textSize="12dp"/>
+
+
+
+
+
+</RelativeLayout>
