@@ -33,10 +33,6 @@ public class MainActivity extends AppCompatActivity {
                 ContextCompat.getColor(this, R.color.colorPrimary)
         );
 
-        //BadgeDrawable badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.notification);
-        //badgeDrawable.setVisible(true);
-        //badgeDrawable.setNumber(8);
-
         bottomNavigationView.setOnItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {

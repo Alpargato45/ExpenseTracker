@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -20,10 +18,9 @@ import androidx.fragment.app.Fragment;
 
 import com.alpargato.expensetracker.CustomAdapters.Expense;
 import com.alpargato.expensetracker.CustomAdapters.ExpensesAdapter;
-import com.alpargato.expensetracker.LoginGoogle;
-import com.alpargato.expensetracker.MainActivity;
+import com.alpargato.expensetracker.Home_acces_classes.AddExpense;
 import com.alpargato.expensetracker.R;
-import com.alpargato.expensetracker.SavingPlan;
+import com.alpargato.expensetracker.Home_acces_classes.SavingPlan;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.firebase.FirebaseApp;
@@ -39,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -55,6 +51,8 @@ public class HomeFragment extends Fragment {
     private TextView txtNoList;
 
     private TextView txtExpensePlan;
+
+    private Button btnAddExpense;
 
 
 
@@ -73,8 +71,8 @@ public class HomeFragment extends Fragment {
 
 
         /*editExpense = view.findViewById(R.id.editTextExpenses);
-        editExpenseType = view.findViewById(R.id.editTextExpenseType);
-        btnAddDatabase = view.findViewById(R.id.btnAddDatabase);*/
+        editExpenseType = view.findViewById(R.id.editTextExpenseType);*/
+        btnAddExpense = view.findViewById(R.id.btnAddExpense);
 
         // Inicializa Firebase
         FirebaseApp.initializeApp(requireContext());
@@ -88,16 +86,17 @@ public class HomeFragment extends Fragment {
             txtUser.setText("Usuario no autenticado");
         }
 
-        /*btnAddDatabase.setOnClickListener(new View.OnClickListener() {
+        btnAddExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editExpense.getText() != null && editExpenseType.getText() != null) {
+                /*if (editExpense.getText() != null && editExpenseType.getText() != null) {
                     addExpenseToDatabase(editExpense.getText().toString(),editExpenseType.getText().toString());
                 }else {
                     Toast.makeText(view.getContext(), "Error", Toast.LENGTH_SHORT).show();
-                }
+                }*/
+                goToAddExpense();
             }
-        });*/
+        });
 
         txtExpensePlan.setOnClickListener(view1 -> {
             goToSavingPlan();
@@ -185,6 +184,11 @@ public class HomeFragment extends Fragment {
 
     private void goToSavingPlan() {
         Intent intent = new Intent(HomeFragment.this.getContext(), SavingPlan.class);
+        startActivity(intent);
+    }
+
+    private void goToAddExpense() {
+        Intent intent = new Intent(HomeFragment.this.getContext(), AddExpense.class);
         startActivity(intent);
     }
 }

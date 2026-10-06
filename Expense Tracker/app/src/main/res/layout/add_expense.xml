@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical002"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal03"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <TextView
+        android:id="@+id/txtAddExpenseTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Add Expense"
+        android:textStyle="bold"
+        android:textSize="30dp"
+
+
+        android:textColor="@color/basicWhite"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtAddExpenseTypeTittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Select Category"
+
+        android:textColor="@color/basicWhite"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
+        app:layout_constraintTop_toBottomOf="@+id/txtAddExpenseTitle" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/expenseTypeLayoutSpinner"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="5dp"
+
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVertical05"
+        app:layout_constraintTop_toBottomOf="@+id/txtAddExpenseTypeTittle">
+
+        <AutoCompleteTextView
+            android:id="@+id/expenseTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:hint="Expense type" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/txtModifyCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:text="Modify my categories"
+
+        android:textColor="@color/basicWhite"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
+        app:layout_constraintTop_toBottomOf="@id/expenseTypeLayoutSpinner" />
+
+    <Button
+        android:id="@+id/btnSelectDate"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Select date"
+        android:textColor="@color/basicWhite"
+        android:backgroundTint="@color/basicGreen"
+
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
+        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal03" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
