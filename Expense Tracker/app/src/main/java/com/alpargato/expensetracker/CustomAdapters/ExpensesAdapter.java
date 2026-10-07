@@ -39,14 +39,14 @@ public class ExpensesAdapter extends ArrayAdapter {
         TextView txtNumber = elemento.findViewById(R.id.txtNumber);
         txtNumber.setText(String.valueOf(expense[position].getExpense()));
 
-        ImageView imgType = elemento.findViewById(R.id.expenseImage);
-        imgType.setImageResource(expense[position].getImg());
-
         TextView txtDate = elemento.findViewById(R.id.txtDate);
         txtDate.setText(expense[position].getDate());
 
         TextView txtType = elemento.findViewById(R.id.txtType);
         txtType.setText(expense[position].getExpenseType());
+
+        TextView txtEmoji = elemento.findViewById(R.id.expenseEmoji);
+        txtEmoji.setText(expense[position].getEmoji());
 
         TextView txtMoneySymbol = elemento.findViewById(R.id.txtMoneySymbol);
 

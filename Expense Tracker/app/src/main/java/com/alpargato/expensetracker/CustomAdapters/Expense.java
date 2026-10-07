@@ -3,18 +3,21 @@ package com.alpargato.expensetracker.CustomAdapters;
 public class Expense {
 
     private double expense;
-
-    private int img;
-
     private String date;
 
-    private String ExpenseType;
+    private String expenseType;
 
-    public Expense(double expense, int img, String date, String expenseType) {
+    private String description;
+
+    private String emoji;
+
+
+    public Expense(double expense, String date, String expenseType, String description, String emoji) {
         this.expense = expense;
-        this.img = img;
         this.date = date;
-        ExpenseType = expenseType;
+        this.expenseType = expenseType;
+        this.description = description;
+        this.emoji = emoji;
     }
 
     public double getExpense() {
@@ -23,14 +26,6 @@ public class Expense {
 
     public void setExpense(double expense) {
         this.expense = expense;
-    }
-
-    public int getImg() {
-        return img;
-    }
-
-    public void setImg(int img) {
-        this.img = img;
     }
 
     public String getDate() {
@@ -42,10 +37,26 @@ public class Expense {
     }
 
     public String getExpenseType() {
-        return ExpenseType;
+        return expenseType;
     }
 
     public void setExpenseType(String expenseType) {
-        ExpenseType = expenseType;
+        this.expenseType = expenseType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getEmoji() {
+        return emoji;
+    }
+
+    public void setEmoji(String emoji) {
+        this.emoji = emoji;
     }
 }

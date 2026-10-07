@@ -8,6 +8,13 @@
     android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical045"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical05"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,11 +22,25 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical055"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical002"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.02" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVertical098"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.98" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal03"
@@ -60,11 +81,12 @@
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="5dp"
+        app:boxStrokeColor="@color/basicWhite"
+        android:textColorHighlight="@color/basicWhite"
 
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
-        app:layout_constraintEnd_toEndOf="@id/guidelineVertical05"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVertical045"
         app:layout_constraintTop_toBottomOf="@+id/txtAddExpenseTypeTittle">
 
         <AutoCompleteTextView
@@ -72,6 +94,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
+            android:popupBackground="@color/basicBrown"
+            android:textColorHint="@color/basicWhite"
+            android:background="@color/basicBrown"
+            android:textColor="@color/basicWhite"
             android:hint="Expense type" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -83,7 +109,7 @@
         android:layout_marginTop="6dp"
         android:text="Modify my categories"
 
-        android:textColor="@color/basicWhite"
+        android:textColor="@color/basicBlue"
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
         app:layout_constraintTop_toBottomOf="@id/expenseTypeLayoutSpinner" />
 
@@ -92,11 +118,85 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:text="Select date"
+        android:layout_marginTop="20dp"
         android:textColor="@color/basicWhite"
         android:backgroundTint="@color/basicGreen"
 
         app:layout_constraintStart_toStartOf="@+id/guidelineVertical002"
-        app:layout_constraintTop_toBottomOf="@+id/guidelineHorizontal03" />
+        app:layout_constraintTop_toBottomOf="@+id/txtModifyCategories" />
+
+    <TextView
+        android:id="@+id/txtAmountTittle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:text="Amount"
+
+        android:textColor="@color/basicWhite"
+        app:layout_constraintStart_toStartOf="@+id/guidelineVertical055"
+        app:layout_constraintTop_toBottomOf="@id/txtAddExpenseTitle" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/amountTextField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColorHighlight="@color/basicWhite"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/basicWhite"
+        app:boxBackgroundColor="@color/basicBrown"
+        app:hintTextColor="@color/basicWhite"
+        app:layout_constraintStart_toStartOf="@id/guidelineVertical055"
+        app:layout_constraintEnd_toEndOf="@id/guidelineVertical098"
+        app:layout_constraintTop_toBottomOf="@+id/txtAmountTittle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionTextField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Expense Description"
+        android:textColorHighlight="@color/basicWhite"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:boxStrokeColor="@color/basicWhite"
+        app:boxBackgroundColor="@color/basicBrown"
+        app:counterTextColor="@color/basicWhite"
+        app:placeholderTextColor="@color/basicWhite"
+        app:hintTextColor="@color/basicWhite"
+
+        app:layout_constraintStart_toStartOf="@id/guidelineVertical002"
+        app:layout_constraintEnd_toEndOf="@+id/guidelineVertical098"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnSelectDate">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnAddExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="Add Expense"
+        android:textColor="@color/basicWhite"
+        android:backgroundTint="@color/basicGreen"
+        android:layout_marginTop="10dp"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionTextField" />
 
 
 

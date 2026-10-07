@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.alpargato.expensetracker.CustomAdapters.Expense;
 import com.alpargato.expensetracker.CustomAdapters.ExpensesAdapter;
+import com.alpargato.expensetracker.ExpenseType.ExpenseType;
+import com.alpargato.expensetracker.ExpenseType.ExpenseTypeManager;
 import com.alpargato.expensetracker.Home_acces_classes.AddExpense;
 import com.alpargato.expensetracker.R;
 import com.alpargato.expensetracker.Home_acces_classes.SavingPlan;
@@ -34,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -53,7 +52,6 @@ public class HomeFragment extends Fragment {
     private TextView txtExpensePlan;
 
     private Button btnAddExpense;
-
 
 
     @Override
@@ -94,7 +92,7 @@ public class HomeFragment extends Fragment {
                 }else {
                     Toast.makeText(view.getContext(), "Error", Toast.LENGTH_SHORT).show();
                 }*/
-                goToAddExpense();
+                openDialogAddExpense();
             }
         });
 
@@ -110,74 +108,100 @@ public class HomeFragment extends Fragment {
 
     private void readRecentsExpensesFromDatabase() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            progressBar.setVisibility(View.GONE);
+            txtNoList.setVisibility(View.VISIBLE);
+            return;
+        }
+
         String UID = user.getUid();
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("expenses").child(UID).child("userExpenses");
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                .getReference("expenses")
+                .child(UID)
+                .child("userExpenses");
+
         List<Expense> listaGastos = new ArrayList<>();
+
         dbRef.orderByKey().limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    String amountStr = snapshot.child("amount").getValue(String.class);
-                    String category = snapshot.child("category").getValue(String.class);
 
-                    double amount = 0.0;
+                    Object expenseValue = snapshot.child("expense").getValue();
 
-                    amount = Double.parseDouble(amountStr);
+                    double expense = 0.0;
 
-                    listaGastos.add(new Expense(amount,R.drawable.google_logo_small,"2025-02-05",category));
+                    if (expenseValue instanceof Number) {
+                        expense = ((Number) expenseValue).doubleValue();
+                    } else if (expenseValue != null) {
+                        expense = Double.parseDouble(expenseValue.toString());
+                    }
+
+                    String date = snapshot.child("date").getValue(String.class);
+                    String expenseType = snapshot.child("expenseType").getValue(String.class);
+                    String description = snapshot.child("description").getValue(String.class);
+                    String emoji = getEmojiExpenseType(snapshot);
+
+                    if (date == null) {
+                        date = "";
+                    }
+
+                    if (expenseType == null) {
+                        expenseType = "";
+                    }
+
+                    if (description == null) {
+                        description = "";
+                    }
+
+                    listaGastos.add(new Expense(expense, date, expenseType, description,emoji));
                 }
 
                 Collections.reverse(listaGastos);
 
-                if (listaGastos != null) {
-                    progressBar.setVisibility(View.GONE);
+                progressBar.setVisibility(View.GONE);
+
+                if (!listaGastos.isEmpty()) {
                     listado.setVisibility(View.VISIBLE);
 
-                    ExpensesAdapter miAdaptador = new ExpensesAdapter(getContext(),listaGastos.toArray(new Expense[0]));
+                    ExpensesAdapter miAdaptador = new ExpensesAdapter(
+                            getContext(),
+                            listaGastos.toArray(new Expense[0])
+                    );
+
                     listado.setAdapter(miAdaptador);
-                }else {
-                    progressBar.setVisibility(View.GONE);
+                } else {
                     txtNoList.setVisibility(View.VISIBLE);
                 }
-
-
-//                listado.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                    }
-//                });
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(DatabaseError error) {
                 progressBar.setVisibility(View.GONE);
-                listado.setVisibility(View.VISIBLE);
+                txtNoList.setVisibility(View.VISIBLE);
+
                 Log.e("Firebase", "Error al leer datos: " + error.getMessage());
             }
         });
     }
 
-    private void addExpenseToDatabase(String expense, String expenseType) {
-        HashMap<String, Object> userData = new HashMap<>();
-        FirebaseUser user = auth.getCurrentUser();
-        String UID = user.getUid();
-        DatabaseReference expenseRef = FirebaseDatabase.getInstance().getReference("expenses").child(UID).child("userExpenses");
-        //DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("expenses");
-
-        //userData.put("userName",auth.getCurrentUser().getDisplayName());
-
-        HashMap<String, Object> Addexpenses = new HashMap<>();
-
-        Addexpenses.put("amount",expense);
-        Addexpenses.put("category",expenseType);
-
-        //databaseRef.setValue(userData);
-        expenseRef.push().setValue(Addexpenses);
-
-        Toast.makeText(getView().getContext(), "Added Succsesfully", Toast.LENGTH_SHORT).show();
-
+    private String getEmojiExpenseType(DataSnapshot snapshot) {
+        ExpenseTypeManager manager = new ExpenseTypeManager(requireContext());
+        List<ExpenseType> categories = manager.getCategories();
+        String category = snapshot.child("expenseType").getValue(String.class);
+        if (category == null) {
+            return "";
+        }
+        String name = category.substring(category.indexOf(" ") + 1).trim();
+        for (ExpenseType ex : categories) {
+            if (ex.getName().equals(name)) {
+                return ex.getEmoji();
+            }
+        }
+        return "";
     }
 
 
@@ -187,8 +211,13 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void goToAddExpense() {
-        Intent intent = new Intent(HomeFragment.this.getContext(), AddExpense.class);
-        startActivity(intent);
+    private void openDialogAddExpense() {
+        AddExpense dialog = new AddExpense();
+
+        dialog.setOnExpenseAddedListener(this::readRecentsExpensesFromDatabase);
+        dialog.show(
+                getParentFragmentManager(),
+                "AddExpense"
+        );
     }
 }
