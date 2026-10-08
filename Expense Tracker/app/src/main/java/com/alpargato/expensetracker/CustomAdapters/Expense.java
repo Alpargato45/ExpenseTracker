@@ -4,20 +4,24 @@ public class Expense {
 
     private double expense;
     private String date;
-
     private String expenseType;
-
     private String description;
-
     private String emoji;
+    private String firebaseKey;
 
+    public Expense(double expense, String date, String expenseType,
+                   String description, String emoji) {
+        this(expense, date, expenseType, description, emoji, null);
+    }
 
-    public Expense(double expense, String date, String expenseType, String description, String emoji) {
+    public Expense(double expense, String date, String expenseType,
+                   String description, String emoji, String firebaseKey) {
         this.expense = expense;
         this.date = date;
         this.expenseType = expenseType;
         this.description = description;
         this.emoji = emoji;
+        this.firebaseKey = firebaseKey;
     }
 
     public double getExpense() {
@@ -58,5 +62,13 @@ public class Expense {
 
     public void setEmoji(String emoji) {
         this.emoji = emoji;
+    }
+
+    public String getFirebaseKey() {
+        return firebaseKey;
+    }
+
+    public void setFirebaseKey(String firebaseKey) {
+        this.firebaseKey = firebaseKey;
     }
 }

@@ -46,6 +46,10 @@ public class AddExpense extends DialogFragment {
     private OnExpenseAddedListener listener;
     private FirebaseAuth auth;
 
+    private TextView txtAddExpenseTitle;
+    private Expense expenseToEdit;
+    private String editingExpenseKey;
+
     public AddExpense() {
         // Constructor vacío obligatorio
     }
@@ -66,6 +70,7 @@ public class AddExpense extends DialogFragment {
         txtAddAmount = view.findViewById(R.id.edtAmount);
         txtAddDescription = view.findViewById(R.id.edtDescription);
         txtModifyCategories = view.findViewById(R.id.txtModifyCategories);
+        txtAddExpenseTitle = view.findViewById(R.id.txtAddExpenseTitle);
 
 
         auth = FirebaseAuth.getInstance();
@@ -78,6 +83,29 @@ public class AddExpense extends DialogFragment {
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.item_expense_type, categoryNames);
         expenseTypeSpinner.setAdapter(adapter);
+
+        if (expenseToEdit != null) {
+
+            txtAddExpenseTitle.setText("Edit Expense");
+            btnAddExpenseToDB.setText("Save");
+
+            txtAddAmount.setText(String.valueOf(expenseToEdit.getExpense()));
+            txtAddDescription.setText(expenseToEdit.getDescription());
+            btnSetDate.setText(expenseToEdit.getDate());
+
+            String currentCategory = expenseToEdit.getExpenseType().trim();
+
+            for (ExpenseType category : categories) {
+                if (currentCategory.equals(category.getName())
+                        || currentCategory.endsWith(category.getName())) {
+
+                    expenseTypeSpinner.setText(
+                            category.getEmoji() + "  " + category.getName(),
+                            false
+                    );
+                }
+            }
+        }
 
         btnSetDate.setOnClickListener(view1 -> {
             setDate();
@@ -132,35 +160,124 @@ public class AddExpense extends DialogFragment {
         datePickerDialog.show();
     }
 
-    private void addToDB() {
-        double amount = Double.parseDouble(txtAddAmount.getText().toString());
-        String categoryEmoji = expenseTypeSpinner.getText().toString();
-        String category = categoryEmoji.substring(categoryEmoji.indexOf(" ") + 1);
-        String date = btnSetDate.getText().toString();
-        String description = txtAddDescription.getText().toString();
-        String emoji = category.substring(0, category.indexOf(" "));
 
-        if (description == null) {
-            description = "";
+    private void addToDB() {
+
+        String amountText = txtAddAmount.getText() == null
+                ? ""
+                : txtAddAmount.getText().toString().trim();
+
+        if (amountText.isEmpty()) {
+            txtAddAmount.setError("Enter an amount");
+            return;
         }
 
-        Expense expense = new Expense(amount,date,category, description,emoji);
+        double amount;
+
+        try {
+            amount = Double.parseDouble(amountText.replace(',', '.'));
+        } catch (NumberFormatException e) {
+            txtAddAmount.setError("Enter a valid amount");
+            return;
+        }
+
+        String categoryEmoji = expenseTypeSpinner.getText().toString();
+
+        if (categoryEmoji.trim().isEmpty()) {
+            expenseTypeSpinner.setError("Select a category");
+            return;
+        }
+
+        String date = btnSetDate.getText().toString();
+
+        if (date.equals("Select date")) {
+            Toast.makeText(requireContext(),
+                    "Select a date", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String category = categoryEmoji.substring(
+                categoryEmoji.indexOf(" ") + 1
+        );
+
+        String emoji = category.substring(0, category.indexOf(" "));
+        String description = txtAddDescription.getText() == null
+                ? ""
+                : txtAddDescription.getText().toString();
 
         FirebaseUser user = auth.getCurrentUser();
-        if (user == null) return;
 
-        String UID = user.getUid();
+        if (user == null) {
+            return;
+        }
 
-        DatabaseReference expenseRef = FirebaseDatabase.getInstance().getReference("expenses").child(UID).child("userExpenses");
+        DatabaseReference expenseRef = FirebaseDatabase.getInstance()
+                .getReference("expenses")
+                .child(user.getUid())
+                .child("userExpenses");
 
-        expenseRef.push().setValue(expense).addOnSuccessListener(unused -> {
-                    Toast.makeText(requireContext(), "Added Successfully", Toast.LENGTH_SHORT).show();
-                    if (listener != null) {
-                        listener.onExpenseAdded();
-                    }
-                    dismiss();
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "Error adding expense", Toast.LENGTH_SHORT).show();
-                });
+        java.util.Map<String, Object> expenseData =
+                new java.util.HashMap<>();
+
+        expenseData.put("expense", amount);
+        expenseData.put("date", date);
+        expenseData.put("expenseType", category);
+        expenseData.put("description", description);
+        expenseData.put("emoji", emoji);
+
+        if (expenseToEdit != null) {
+
+            if (editingExpenseKey == null || editingExpenseKey.isEmpty()) {
+                Toast.makeText(requireContext(),
+                        "Unable to identify this expense",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            expenseRef.child(editingExpenseKey)
+                    .updateChildren(expenseData)
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(requireContext(),
+                                "Expense updated successfully",
+                                Toast.LENGTH_SHORT).show();
+
+                        if (listener != null) {
+                            listener.onExpenseAdded();
+                        }
+
+                        dismiss();
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(requireContext(),
+                                    "Error updating expense",
+                                    Toast.LENGTH_SHORT).show()
+                    );
+
+        } else {
+
+            expenseRef.push()
+                    .setValue(expenseData)
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(requireContext(),
+                                "Added Successfully",
+                                Toast.LENGTH_SHORT).show();
+
+                        if (listener != null) {
+                            listener.onExpenseAdded();
+                        }
+
+                        dismiss();
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(requireContext(),
+                                    "Error adding expense",
+                                    Toast.LENGTH_SHORT).show()
+                    );
+        }
+    }
+
+    public void setExpenseToEdit(Expense expense) {
+        this.expenseToEdit = expense;
+        this.editingExpenseKey = expense.getFirebaseKey();
     }
 }

@@ -8,7 +8,17 @@
     android:fitsSystemWindows="true"
     android:background="@color/colorPrimary">
 
-    <!-- TÍTULO -->
+    <!-- HEADER -->
+    <ImageButton
+        android:id="@+id/btnGoBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        android:background="@android:color/transparent"
+        android:contentDescription="Go back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
@@ -17,34 +27,32 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@color/basicWhite"
-        android:layout_marginStart="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        app:layout_constraintStart_toEndOf="@id/btnGoBack"
+        app:layout_constraintEnd_toStartOf="@id/btnDelete"
+        app:layout_constraintTop_toTopOf="@id/btnGoBack"
+        app:layout_constraintBottom_toBottomOf="@id/btnGoBack"/>
 
     <ImageButton
-        android:id="@+id/btnGoBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/baseline_arrow_back_24"
+        android:id="@+id/btnDelete"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/baseline_delete_outline_24"
         android:background="@android:color/transparent"
-        android:contentDescription="GoBack"
-        app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="Clear filters"
+        app:layout_constraintEnd_toStartOf="@id/btnSearch"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- BUSCAR -->
     <ImageButton
         android:id="@+id/btnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:src="@drawable/baseline_search_24"
         android:background="@android:color/transparent"
-        android:contentDescription="Search"
+        android:contentDescription="Apply filters"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- FILTROS -->
+    <!-- CATEGORY FILTERS -->
     <HorizontalScrollView
         android:id="@+id/filterScroll"
         android:layout_width="0dp"
@@ -61,12 +69,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:gravity="center_vertical">
-
-        </LinearLayout>
+            android:gravity="center_vertical"/>
 
     </HorizontalScrollView>
 
+    <!-- DATE FILTERS -->
     <Button
         android:id="@+id/btnDateFrom"
         android:layout_width="0dp"
@@ -93,28 +100,132 @@
         app:layout_constraintStart_toEndOf="@id/btnDateFrom"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- LISTA -->
+    <!-- DESCRIPTION SEARCH -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/descriptionSearchLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Search description"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/basicBrown"
+        app:hintTextColor="@color/basicWhite"
+        app:layout_constraintTop_toBottomOf="@id/btnDateFrom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtDescriptionSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="text"
+            android:textColor="@color/basicWhite"
+            android:textColorHint="@color/basicWhite"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- AMOUNT FILTERS -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/minAmountLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Min amount"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="8dp"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/basicBrown"
+        app:hintTextColor="@color/basicWhite"
+        app:layout_constraintTop_toBottomOf="@id/descriptionSearchLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/maxAmountLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtMinAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned"
+            android:singleLine="true"
+            android:textColor="@color/basicWhite"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/maxAmountLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Max amount"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/basicBrown"
+        app:hintTextColor="@color/basicWhite"
+        app:layout_constraintTop_toBottomOf="@id/descriptionSearchLayout"
+        app:layout_constraintStart_toEndOf="@id/minAmountLayout"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edtMaxAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned"
+            android:singleLine="true"
+            android:textColor="@color/basicWhite"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- SORTING -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/sortLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Sort expenses"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/basicBrown"
+        app:hintTextColor="@color/basicWhite"
+        app:endIconMode="dropdown_menu"
+        app:layout_constraintTop_toBottomOf="@id/minAmountLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <AutoCompleteTextView
+            android:id="@+id/spinnerSort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:textColor="@color/basicWhite"
+            android:padding="12dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- EXPENSE LIST -->
     <ListView
         android:id="@+id/listExpenses"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="8dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/btnDateFrom"
+        android:divider="@null"
+        app:layout_constraintTop_toBottomOf="@id/sortLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- LOADING -->
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:indeterminateTint="@color/basicWhite"
         android:indeterminate="true"
-
-        app:layout_constraintTop_toBottomOf="@id/filterScroll"
+        app:layout_constraintTop_toBottomOf="@id/sortLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
@@ -123,11 +234,12 @@
         android:id="@+id/txtNoExistRecent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/filterScroll"
-        android:text="No existen gastos recientes"
+        android:text="No expenses found"
+        android:textColor="@color/basicWhite"
         android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sortLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filterScroll" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

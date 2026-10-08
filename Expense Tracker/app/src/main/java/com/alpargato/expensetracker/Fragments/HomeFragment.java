@@ -1,5 +1,6 @@
 package com.alpargato.expensetracker.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -103,6 +105,13 @@ public class HomeFragment extends Fragment {
 
         readRecentsExpensesFromDatabase();
 
+        listado.setOnItemClickListener((parent, itemView, position, id) -> {
+            Expense selectedExpense =
+                    (Expense) parent.getItemAtPosition(position);
+
+            showExpenseOptions(selectedExpense);
+        });
+
 
         return view;
     }
@@ -156,7 +165,7 @@ public class HomeFragment extends Fragment {
                         description = "";
                     }
 
-                    listaGastos.add(new Expense(expense, date, expenseType, description,emoji));
+                    listaGastos.add(new Expense(expense, date, expenseType, description, emoji, snapshot.getKey()));
                 }
 
                 Collections.reverse(listaGastos);
@@ -165,6 +174,7 @@ public class HomeFragment extends Fragment {
 
                 if (!listaGastos.isEmpty()) {
                     listado.setVisibility(View.VISIBLE);
+                    txtNoList.setVisibility(View.GONE);
 
                     ExpensesAdapter miAdaptador = new ExpensesAdapter(
                             getContext(),
@@ -173,6 +183,7 @@ public class HomeFragment extends Fragment {
 
                     listado.setAdapter(miAdaptador);
                 } else {
+                    listado.setVisibility(View.GONE);
                     txtNoList.setVisibility(View.VISIBLE);
                 }
             }
@@ -201,6 +212,76 @@ public class HomeFragment extends Fragment {
             }
         }
         return "";
+    }
+
+    private void showExpenseOptions(Expense expense) {
+
+        String[] options = {"Edit Expense", "Delete Expense"};
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Manage Expense")
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        editExpense(expense);
+                    } else if (which == 1) {
+                        confirmDeleteExpense(expense);
+                    }
+                })
+                .show();
+    }
+
+    private void editExpense(Expense expense) {
+
+        AddExpense dialog = new AddExpense();
+
+        dialog.setExpenseToEdit(expense);
+        dialog.setOnExpenseAddedListener(
+                this::readRecentsExpensesFromDatabase
+        );
+
+        dialog.show(getParentFragmentManager(), "EditExpense");
+    }
+
+    private void confirmDeleteExpense(Expense expense) {
+
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Delete Expense")
+                .setMessage("Are you sure you want to delete this expense?")
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                .setPositiveButton("Yes, delete", (dialog, which) -> {
+
+                    FirebaseUser user =
+                            FirebaseAuth.getInstance().getCurrentUser();
+
+                    if (user == null || expense.getFirebaseKey() == null) {
+                        Toast.makeText(requireContext(),
+                                "Unable to identify this expense",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    DatabaseReference expenseRef = FirebaseDatabase
+                            .getInstance()
+                            .getReference("expenses")
+                            .child(user.getUid())
+                            .child("userExpenses")
+                            .child(expense.getFirebaseKey());
+
+                    expenseRef.removeValue()
+                            .addOnSuccessListener(unused -> {
+                                Toast.makeText(requireContext(),
+                                        "Expense deleted",
+                                        Toast.LENGTH_SHORT).show();
+
+                                readRecentsExpensesFromDatabase();
+                            })
+                            .addOnFailureListener(e ->
+                                    Toast.makeText(requireContext(),
+                                            "Error deleting expense",
+                                            Toast.LENGTH_SHORT).show()
+                            );
+                })
+                .show();
     }
 
 
