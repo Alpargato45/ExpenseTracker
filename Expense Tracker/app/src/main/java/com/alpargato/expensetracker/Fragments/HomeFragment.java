@@ -21,6 +21,7 @@ import com.alpargato.expensetracker.ExpenseType.ExpenseTypeManager;
 import com.alpargato.expensetracker.Home_acces_classes.AddExpense;
 import com.alpargato.expensetracker.R;
 import com.alpargato.expensetracker.Home_acces_classes.SavingPlan;
+import com.alpargato.expensetracker.SeeAllExpenses;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.google.firebase.FirebaseApp;
@@ -39,19 +40,14 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private ImageView imgUser;
-
     private TextView txtUser;
     private FirebaseAuth auth;
-
     private ListView listado;
-
     private ProgressBar progressBar;
-
     private TextView txtNoList;
-
     private TextView txtExpensePlan;
-
     private Button btnAddExpense;
+    private TextView txtViewMoreRecentExpenses;
 
 
     @Override
@@ -66,6 +62,7 @@ public class HomeFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         txtNoList = view.findViewById(R.id.txtNoExistRecent);
         txtExpensePlan = view.findViewById(R.id.txtViewMoreExpensePlan);
+        txtViewMoreRecentExpenses = view.findViewById(R.id.txtViewMoreRecentExpenses);
 
 
         /*editExpense = view.findViewById(R.id.editTextExpenses);
@@ -98,6 +95,10 @@ public class HomeFragment extends Fragment {
 
         txtExpensePlan.setOnClickListener(view1 -> {
             goToSavingPlan();
+        });
+
+        txtViewMoreRecentExpenses.setOnClickListener(view1 -> {
+            goToSeeAllExpenses();
         });
 
         readRecentsExpensesFromDatabase();
@@ -148,11 +149,9 @@ public class HomeFragment extends Fragment {
                     if (date == null) {
                         date = "";
                     }
-
                     if (expenseType == null) {
                         expenseType = "";
                     }
-
                     if (description == null) {
                         description = "";
                     }
@@ -219,5 +218,10 @@ public class HomeFragment extends Fragment {
                 getParentFragmentManager(),
                 "AddExpense"
         );
+    }
+
+    private void goToSeeAllExpenses() {
+        Intent intent = new Intent(HomeFragment.this.getContext(), SeeAllExpenses.class);
+        startActivity(intent);
     }
 }

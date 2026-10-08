@@ -114,11 +114,9 @@ public class AddExpense extends DialogFragment {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 requireContext(),
                 (datePicker, selectedYear, selectedMonth, selectedDay) -> {
-
                     String date = selectedYear + "-"
                             + (selectedMonth + 1) + "-"
                             + selectedDay;
-
                     btnSetDate.setText(date);
                 },
                 year,
@@ -126,14 +124,11 @@ public class AddExpense extends DialogFragment {
                 day
         );
         datePickerDialog.setOnShowListener(dialog -> {
-
             Button positiveButton = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
             Button negativeButton = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-
             positiveButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.basicWhite));
             negativeButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.basicWhite));
         });
-
         datePickerDialog.show();
     }
 
